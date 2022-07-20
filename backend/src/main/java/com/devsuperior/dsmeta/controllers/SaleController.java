@@ -1,10 +1,13 @@
-package com.devsuperior.dsmeta.controllers;
-//Controllers chama o service e o service chama o respository
-import java.util.List;
+//Responsável por implementar a API. É o controller que vai disponibilizar os endpoints que o front end
+//vai precisar parar acessar o backend
 
+package com.devsuperior.dsmeta.controllers;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.devsuperior.dsmeta.entities.Sale;
@@ -18,7 +21,10 @@ public class SaleController {
 	private SaleService service;
 	
 	@GetMapping
-	public List<Sale> findSales(){
-		return service.findSales();
+	public Page<Sale> findSales(
+			@RequestParam(value="minDate", defaultValue = "") String minDate, 
+			@RequestParam(value="maxDate", defaultValue = "") String maxDate, 
+			Pageable pageable){
+		return service.findSales(minDate, maxDate, pageable);
 	}
 }
